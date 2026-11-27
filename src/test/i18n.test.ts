@@ -24,6 +24,17 @@ describe("i18n catalogs", () => {
 	});
 });
 
+describe("browser UI catalog", () => {
+	test("has Japanese text for every web key", () => {
+		const webKeys = (Object.keys(en) as (keyof typeof en)[]).filter((key) => key.startsWith("web."));
+		expect(webKeys.length).toBeGreaterThan(0);
+		for (const key of webKeys) {
+			expect(ja[key].length).toBeGreaterThan(0);
+		}
+		expect(ja["web.nav.kanban"]).toBe("カンバンボード");
+	});
+});
+
 describe("resolveLang", () => {
 	test("defaults to en", () => {
 		expect(resolveLang({})).toBe("en");
