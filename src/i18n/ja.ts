@@ -38,7 +38,7 @@ export const ja: Record<MessageKey, string> = {
 	"help.mcp": "stdio トランスポートで MCP サーバーを起動する",
 	"web.loading": "読み込み中...",
 	"web.poweredBy": "powered by",
-	"web.langToggle": "表示言語を {lang} に切り替える",
+	"web.langToggle": "表示言語",
 	"web.themeToLight": "ライトモードに切り替える",
 	"web.themeToDark": "ダークモードに切り替える",
 	"web.nav.kanban": "カンバンボード",

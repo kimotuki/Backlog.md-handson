@@ -38,7 +38,7 @@ export const en = {
 	/** Browser UI */
 	"web.loading": "Loading...",
 	"web.poweredBy": "powered by",
-	"web.langToggle": "Switch language to {lang}",
+	"web.langToggle": "Display language",
 	"web.themeToLight": "Switch to light mode",
 	"web.themeToDark": "Switch to dark mode",
 	"web.nav.kanban": "Kanban Board",

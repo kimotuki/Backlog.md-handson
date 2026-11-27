@@ -872,7 +872,7 @@ const Board: React.FC<BoardProps> = ({
                           style={{ width: `${progress}%` }}
                         />
                       </div>
-                      <span className="text-xs font-medium text-gray-500 dark:text-gray-400 w-8 text-right">
+                      <span className="text-xs font-medium text-gray-500 dark:text-gray-400 w-8 text-end">
                         {progress}%
                       </span>
                     </div>

@@ -1,5 +1,5 @@
 import React, { createContext, useCallback, useContext, useEffect, useMemo, useState } from 'react';
-import { type Lang, type MessageKey, t as translate, translateStatus as translateStatusName } from '../../i18n/index.ts';
+import { isLang, isRtl, type Lang, type MessageKey, t as translate, translateStatus as translateStatusName } from '../../i18n/index.ts';
 
 const STORAGE_KEY = 'backlog-lang';
 
@@ -10,20 +10,22 @@ interface LanguageContextType {
 	translateStatus: (status: string) => string;
 }
 
-const LanguageContext = createContext<LanguageContextType | undefined>(undefined);
-
-export const useLanguage = () => {
-	const context = useContext(LanguageContext);
-	if (context === undefined) {
-		throw new Error('useLanguage must be used within a LanguageProvider');
-	}
-	return context;
+/** Without a provider (for example a component rendered on its own) the UI stays in English. */
+const DEFAULT_CONTEXT: LanguageContextType = {
+	lang: 'en',
+	setLang: () => {},
+	t: (key, params = {}) => translate(key, params, 'en'),
+	translateStatus: (status) => translateStatusName(status, 'en'),
 };
+
+const LanguageContext = createContext<LanguageContextType>(DEFAULT_CONTEXT);
+
+export const useLanguage = () => useContext(LanguageContext);
 
 function readStoredLang(): Lang | null {
 	try {
 		const value = localStorage.getItem(STORAGE_KEY);
-		return value === 'ja' || value === 'en' ? value : null;
+		return isLang(value) ? value : null;
 	} catch {
 		return null;
 	}
@@ -43,7 +45,7 @@ export const LanguageProvider: React.FC<{ children: React.ReactNode }> = ({ chil
 		fetch('/api/status')
 			.then((res) => (res.ok ? res.json() : null))
 			.then((data) => {
-				if (!cancelled && !readStoredLang() && data?.lang === 'ja') setLangState('ja');
+				if (!cancelled && !readStoredLang() && isLang(data?.lang)) setLangState(data.lang);
 			})
 			.catch(() => {});
 		return () => {
@@ -53,6 +55,7 @@ export const LanguageProvider: React.FC<{ children: React.ReactNode }> = ({ chil
 
 	useEffect(() => {
 		document.documentElement.lang = lang;
+		document.documentElement.dir = isRtl(lang) ? 'rtl' : 'ltr';
 	}, [lang]);
 
 	const setLang = useCallback((next: Lang) => {

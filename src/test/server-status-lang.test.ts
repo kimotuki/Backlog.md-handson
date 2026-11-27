@@ -46,6 +46,13 @@ describe("/api/status language", () => {
 		expect(body.lang).toBe("en");
 	});
 
+	it("reports ar when BACKLOG_LANG=ar", async () => {
+		process.env.BACKLOG_LANG = "ar";
+		const port = await startServer();
+		const body = await (await fetch(`http://127.0.0.1:${port}/api/status`)).json();
+		expect(body.lang).toBe("ar");
+	});
+
 	it("reports ja when BACKLOG_LANG=ja", async () => {
 		process.env.BACKLOG_LANG = "ja";
 		const port = await startServer();

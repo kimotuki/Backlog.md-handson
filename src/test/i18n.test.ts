@@ -2,8 +2,9 @@ import { afterEach, beforeEach, describe, expect, test } from "bun:test";
 import { mkdir } from "node:fs/promises";
 import { $ } from "bun";
 import { Core } from "../core/backlog.ts";
+import { ar } from "../i18n/ar.ts";
 import { en } from "../i18n/en.ts";
-import { resolveLang, t, translateStatus } from "../i18n/index.ts";
+import { isRtl, resolveLang, t, translateStatus } from "../i18n/index.ts";
 import { ja } from "../i18n/ja.ts";
 import type { Task } from "../types";
 import { getTestCliPath } from "./test-cli.ts";
@@ -16,10 +17,15 @@ describe("i18n catalogs", () => {
 		expect(Object.keys(ja).sort()).toEqual(Object.keys(en).sort());
 	});
 
-	test("ja keeps the same placeholders as en", () => {
+	test("ar defines exactly the keys of en", () => {
+		expect(Object.keys(ar).sort()).toEqual(Object.keys(en).sort());
+	});
+
+	test("ja and ar keep the same placeholders as en", () => {
+		const placeholders = (text: string) => (text.match(/\{\w+\}/g) ?? []).sort();
 		for (const key of Object.keys(en) as (keyof typeof en)[]) {
-			const placeholders = (text: string) => (text.match(/\{\w+\}/g) ?? []).sort();
 			expect(placeholders(ja[key])).toEqual(placeholders(en[key]));
+			expect(placeholders(ar[key])).toEqual(placeholders(en[key]));
 		}
 	});
 });
@@ -43,6 +49,10 @@ describe("resolveLang", () => {
 		expect(resolveLang({ BACKLOG_LANG: "ja" })).toBe("ja");
 		expect(resolveLang({ BACKLOG_LANG: " JA " })).toBe("ja");
 	});
+	test("selects ar from BACKLOG_LANG", () => {
+		expect(resolveLang({ BACKLOG_LANG: "ar" })).toBe("ar");
+		expect(resolveLang({ BACKLOG_LANG: " AR " })).toBe("ar");
+	});
 	test("falls back to en for unsupported values", () => {
 		expect(resolveLang({ BACKLOG_LANG: "fr" })).toBe("en");
 		expect(resolveLang({ BACKLOG_LANG: "" })).toBe("en");
@@ -53,6 +63,15 @@ describe("t and translateStatus", () => {
 	test("substitutes placeholders", () => {
 		expect(t("list.noChildTasks", { parent: "task-1" }, "en")).toBe("No child tasks found for parent task task-1.");
 		expect(t("list.noChildTasks", { parent: "task-1" }, "ja")).toContain("task-1");
+	});
+	test("translates default statuses to Arabic", () => {
+		expect(translateStatus("Done", "ar")).toBe(ar["status.Done"]);
+		expect(translateStatus("Blocked", "ar")).toBe("Blocked");
+	});
+	test("only Arabic is right to left", () => {
+		expect(isRtl("ar")).toBe(true);
+		expect(isRtl("ja")).toBe(false);
+		expect(isRtl("en")).toBe(false);
 	});
 	test("translates default statuses only", () => {
 		expect(translateStatus("In Progress", "ja")).toBe("進行中");
@@ -110,6 +129,22 @@ describe("CLI language switching", () => {
 			.env({ ...process.env, BACKLOG_LANG: "ja" })
 			.quiet();
 		expect(result.stdout.toString()).toContain(ja["help.task.list"]);
+	});
+
+	test("--help is Arabic with BACKLOG_LANG=ar", async () => {
+		const result = await $`bun ${CLI_PATH} --help`
+			.cwd(testDir)
+			.env({ ...process.env, BACKLOG_LANG: "ar" })
+			.quiet();
+		expect(result.stdout.toString()).toContain(ar["help.root"]);
+	});
+
+	test("task list --plain translates the status heading with BACKLOG_LANG=ar", async () => {
+		const result = await $`bun ${CLI_PATH} task list --plain`
+			.cwd(testDir)
+			.env({ ...process.env, BACKLOG_LANG: "ar" })
+			.quiet();
+		expect(result.stdout.toString()).toContain(`${ar["status.To Do"]}:`);
 	});
 
 	test("task list --plain shows English headings by default", async () => {
