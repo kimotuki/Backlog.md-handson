@@ -1,0 +1,40 @@
+/** English messages. This is the default language and the source of truth for message keys. */
+export const en = {
+	"list.noTasks": "No tasks found.",
+	"list.noChildTasks": "No child tasks found for parent task {parent}.",
+	"list.sortedByPriority": "Tasks (sorted by priority)",
+	"list.noStatus": "No Status",
+	"status.To Do": "To Do",
+	"status.In Progress": "In Progress",
+	"status.Done": "Done",
+	/** Descriptions shown by `backlog --help` and `backlog task --help`, keyed by command path. */
+	"help.root": "Backlog.md - Project management CLI",
+	"help.init": "initialize backlog project in the current directory (or BACKLOG_CWD when set)",
+	"help.task": "manage tasks",
+	"help.task.create": "create a new task",
+	"help.task.list": "list tasks grouped by status",
+	"help.task.edit": "edit an existing task",
+	"help.task.view": "display task details",
+	"help.task.archive": "move a task off the board into the archive, keeping its ID and links",
+	"help.task.delete":
+		"permanently delete an archived task and release its ID once no other branch or worktree still holds the task",
+	"help.task.restore": "move an archived task back to the board, keeping its ID and status",
+	"help.task.demote": "move task back to drafts",
+	"help.search": "search tasks, documents, and decisions using the shared index",
+	"help.draft": "manage drafts",
+	"help.milestone": "manage milestones",
+	"help.board": "display tasks in a Kanban board",
+	"help.doc": "manage documents",
+	"help.decision": "manage decisions",
+	"help.agents": "manage the short Backlog.md CLI nudge in agent instruction files",
+	"help.config": "manage backlog configuration",
+	"help.doctor": "diagnose duplicate IDs and dependency problems, and repair what is safe to repair",
+	"help.cleanup": "archive tasks in the final status that are older than a chosen age",
+	"help.browser": "open browser interface on this machine only at 127.0.0.1 (press Ctrl+C or Cmd+C to stop)",
+	"help.overview": "display project statistics and metrics",
+	"help.completion": "manage shell completion scripts",
+	"help.instructions": "show Backlog.md workflow instructions",
+	"help.mcp": "Start the MCP server using stdio transport",
+} as const;
+
+export type MessageKey = keyof typeof en;
