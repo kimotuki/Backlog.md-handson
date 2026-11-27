@@ -125,6 +125,48 @@ Everything is stored as human-readable Markdown in a project-local backlog folde
 > [!TIP]
 > **Want an architecture diagram of your repo, kept up to date automatically?** See the [Backlog.md + Groma.md integration](#groma-md) below.
 
+### 日本語クイックスタート
+
+最短で試す手順です。Git リポジトリ（または空のフォルダ）で実行します。
+
+```bash
+# 1. インストール
+npm i -g backlog.md
+
+# 2. プロジェクトを初期化（Git を使わない場合は --no-git を付ける）
+#    --defaults は質問を省略します（省略しない場合は対話で設定します）
+backlog init "My Project" --defaults
+
+# 3. タスクを作成して一覧を確認
+backlog task create "最初のタスク"
+backlog task list --plain
+```
+
+タスクは `backlog/` フォルダ内の Markdown ファイルとして保存されます。ボードやブラウザでも確認できます。
+
+```bash
+backlog board     # ターミナルのカンバンボード
+backlog browser   # ブラウザ UI（--port でポート指定、--no-open で自動起動を無効化）
+```
+
+#### 表示言語を日本語にする
+
+環境変数 `BACKLOG_LANG=ja` を指定すると、表示が日本語になります。未指定、または `ja` 以外の値のときは英語です。
+
+```bash
+# CLI のヘルプとタスク一覧
+BACKLOG_LANG=ja backlog --help
+BACKLOG_LANG=ja backlog task list --plain
+
+# ブラウザ UI（初期言語が日本語になる）
+BACKLOG_LANG=ja backlog browser
+```
+
+- **CLI**: `backlog --help` と `backlog task --help` のコマンド説明、`backlog task list --plain` の見出しとメッセージが対象です。`task list` の `To Do` / `In Progress` / `Done` は `未着手` / `進行中` / `完了` と表示されます。独自に追加したステータスはそのまま表示されます。
+- **ブラウザ UI**: ナビゲーション、サイドバー、ボードの見出しと絞り込み、ステータス列が対象です。画面上部の「日本語 / EN」ボタンでも切り替えられ、選択はブラウザに保存されます。
+- 保存されるデータ、`--status` などのフィルタ値、`--json` の出力は常に英語のままです。例えば `backlog task list --status "To Do"` のように英語で指定します。
+- 上記以外の画面や出力は、現時点では英語のままです。
+
 ---
 
 ## Working with AI agents

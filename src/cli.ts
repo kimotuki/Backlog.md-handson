@@ -43,6 +43,7 @@ import {
 	taskViewJson,
 } from "./formatters/json-output.ts";
 import { formatTaskPlainText } from "./formatters/task-plain-text.ts";
+import { applyHelpTranslations, resolveLang, t, translateStatus } from "./i18n/index.ts";
 import {
 	type AgentInstructionFile,
 	addAgentInstructions,
@@ -2610,13 +2611,13 @@ function printTaskSections(tasks: Task[], sortField: string | undefined, statuse
 	// Use the stdout stream, as JSON output does, so pending pipe writes keep the CLI alive.
 	for (const section of sectionTasks(tasks, sortField, statuses)) {
 		if (section.status === null) {
-			process.stdout.write("Tasks (sorted by priority):\n");
+			process.stdout.write(`${t("list.sortedByPriority")}:\n`);
 			for (const task of section.tasks) {
 				process.stdout.write(`${formatPlainTaskListRow(task, { includeStatus: true })}\n`);
 			}
 			continue;
 		}
-		process.stdout.write(`${section.status || "No Status"}:\n`);
+		process.stdout.write(`${section.status ? translateStatus(section.status) : t("list.noStatus")}:\n`);
 		for (const task of section.tasks) {
 			process.stdout.write(`${formatPlainTaskListRow(task)}\n`);
 		}
@@ -2799,9 +2800,9 @@ async function runTaskList(
 		printListWindow(displayTasks, listWindow, (windowTasks) => {
 			if (windowTasks.length === 0) {
 				if (resolvedParentId) {
-					process.stdout.write(`No child tasks found for parent task ${parentDisplayId}.\n`);
+					process.stdout.write(`${t("list.noChildTasks", { parent: parentDisplayId ?? "" })}\n`);
 				} else {
-					process.stdout.write("No tasks found.\n");
+					process.stdout.write(`${t("list.noTasks")}\n`);
 				}
 				return;
 			}
@@ -6237,6 +6238,8 @@ registerInstructionsCommand(program);
 
 // MCP command group
 registerMcpCommand(program);
+
+applyHelpTranslations(program, resolveLang());
 
 program
 	.parseAsync(process.argv)

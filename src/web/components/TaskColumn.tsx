@@ -1,4 +1,5 @@
 import React from 'react';
+import { useLanguage } from '../contexts/LanguageContext';
 import { type Task } from '../../types';
 import { compareTaskIds, sortByPriority } from '../../utils/task-sorting';
 import type { ReorderTaskPayload } from '../lib/api';
@@ -84,6 +85,7 @@ const TaskColumn: React.FC<TaskColumnProps> = ({
   isSelectionDragging,
   onSelectionDragChange,
 }) => {
+  const { translateStatus, t } = useLanguage();
   const [isDragOver, setIsDragOver] = React.useState(false);
   const [draggedTaskId, setDraggedTaskId] = React.useState<string | null>(null);
   const [dropPosition, setDropPosition] = React.useState<{ index: number; position: 'before' | 'after' | 'self' } | null>(null);
@@ -252,7 +254,7 @@ const TaskColumn: React.FC<TaskColumnProps> = ({
     >
       <div className="flex items-center justify-between mb-4">
         <div className="flex items-center gap-2">
-          <h3 className="font-semibold text-gray-900 dark:text-gray-100 transition-colors duration-200">{title}</h3>
+          <h3 className="font-semibold text-gray-900 dark:text-gray-100 transition-colors duration-200">{translateStatus(title)}</h3>
           <span className={`px-2 py-1 text-xs font-medium rounded-circle ${getStatusBadgeClass(title)}`}>
             {tasks.length}
           </span>
@@ -264,8 +266,8 @@ const TaskColumn: React.FC<TaskColumnProps> = ({
               type="button"
               onClick={() => setShowMenu(!showMenu)}
               className="p-1 text-gray-400 hover:text-gray-600 dark:hover:text-gray-200 rounded-md hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors duration-200 focus:outline-none"
-              title="Column actions"
-              aria-label="Column actions"
+              title={t('web.column.actions')}
+              aria-label={t('web.column.actions')}
               aria-haspopup="menu"
               aria-expanded={showMenu}
               aria-controls={columnActionsId}
