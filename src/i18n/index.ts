@@ -1,17 +1,30 @@
 import type { Command } from "commander";
 import { DEFAULT_STATUSES } from "../constants/index.ts";
+import { ar } from "./ar.ts";
 import { en, type MessageKey } from "./en.ts";
 import { ja } from "./ja.ts";
 
-export type Lang = "en" | "ja";
+export const LANGS = ["en", "ja", "ar"] as const;
+export type Lang = (typeof LANGS)[number];
+
+export function isLang(value: unknown): value is Lang {
+	return typeof value === "string" && (LANGS as readonly string[]).includes(value);
+}
+
+/** Languages written right to left. */
+export const RTL_LANGS: readonly Lang[] = ["ar"];
+
+export function isRtl(lang: Lang): boolean {
+	return RTL_LANGS.includes(lang);
+}
 export type { MessageKey };
 
-const CATALOGS: Record<Lang, Record<MessageKey, string>> = { en, ja };
+const CATALOGS: Record<Lang, Record<MessageKey, string>> = { en, ja, ar };
 
 /** Resolves the display language from BACKLOG_LANG. Unset or unsupported values fall back to English. */
 export function resolveLang(env: Record<string, string | undefined> = process.env): Lang {
 	const value = env.BACKLOG_LANG?.trim().toLowerCase();
-	return value === "ja" ? "ja" : "en";
+	return value === "ja" || value === "ar" ? value : "en";
 }
 
 /** Looks up a message, replacing `{name}` placeholders with the given params. */

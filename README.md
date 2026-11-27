@@ -151,7 +151,7 @@ backlog browser   # ブラウザ UI（--port でポート指定、--no-open で�
 
 #### 表示言語を日本語にする
 
-環境変数 `BACKLOG_LANG=ja` を指定すると、表示が日本語になります。未指定、または `ja` 以外の値のときは英語です。
+環境変数 `BACKLOG_LANG=ja` を指定すると、表示が日本語になります。`BACKLOG_LANG=ar` ではアラビア語になります。未指定、またはこれら以外の値のときは英語です。
 
 ```bash
 # CLI のヘルプとタスク一覧
@@ -160,10 +160,13 @@ BACKLOG_LANG=ja backlog task list --plain
 
 # ブラウザ UI（初期言語が日本語になる）
 BACKLOG_LANG=ja backlog browser
+
+# アラビア語（العربية）。ブラウザ UI は右から左のレイアウトになる（翻訳済みの画面のみ対応）
+BACKLOG_LANG=ar backlog browser
 ```
 
 - **CLI**: `backlog --help` と `backlog task --help` のコマンド説明、`backlog task list --plain` の見出しとメッセージが対象です。`task list` の `To Do` / `In Progress` / `Done` は `未着手` / `進行中` / `完了` と表示されます。独自に追加したステータスはそのまま表示されます。
-- **ブラウザ UI**: ナビゲーション、サイドバー、ボードの見出しと絞り込み、ステータス列が対象です。画面上部の「日本語 / EN」ボタンでも切り替えられ、選択はブラウザに保存されます。
+- **ブラウザ UI**: ナビゲーション、サイドバー、ボードの見出しと絞り込み、ステータス列が対象です。画面上部の言語セレクト（English / 日本語 / العربية）でも切り替えられ、選択はブラウザに保存されます。
 - 保存されるデータ、`--status` などのフィルタ値、`--json` の出力は常に英語のままです。例えば `backlog task list --status "To Do"` のように英語で指定します。
 - 上記以外の画面や出力は、現時点では英語のままです。
 

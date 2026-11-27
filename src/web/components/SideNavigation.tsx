@@ -159,12 +159,12 @@ const Icons = {
 		</svg>
 	),
 	ChevronLeft: () => (
-		<svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+		<svg className="w-4 h-4 rtl:-scale-x-100" fill="none" stroke="currentColor" viewBox="0 0 24 24">
 			<path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
 		</svg>
 	),
 	ChevronRight: () => (
-		<svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+		<svg className="w-4 h-4 rtl:-scale-x-100" fill="none" stroke="currentColor" viewBox="0 0 24 24">
 			<path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
 		</svg>
 	),
@@ -203,7 +203,7 @@ const DocLink = ({ doc, depth = 0 }: { doc: Document; depth?: number }) => (
 					: 'text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 hover:text-gray-900 dark:hover:text-gray-100'
 			}`
 		}
-		style={depth > 0 ? { paddingLeft: `${12 + depth * 12}px` } : undefined}
+		style={depth > 0 ? { paddingInlineStart: `${12 + depth * 12}px` } : undefined}
 	>
 		<span className="text-gray-400 dark:text-gray-500"><Icons.DocumentPage /></span>
 		<span className="truncate">{doc.title}</span>
@@ -228,11 +228,11 @@ const FolderNode = memo(function FolderNode({ node, depth, folderExpanded, onTog
 				aria-expanded={isExpanded}
 				title={node.name}
 				className="flex items-center px-3 py-2 text-sm text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg transition-colors duration-200 w-full"
-				style={{ paddingLeft: `${12 + depth * 12}px` }}
+				style={{ paddingInlineStart: `${12 + depth * 12}px` }}
 			>
 				<span className="shrink-0">{isExpanded ? <Icons.ChevronDown /> : <Icons.ChevronRight />}</span>
-				<span className="text-gray-500 dark:text-gray-400 ml-1 shrink-0"><Icons.Folder /></span>
-				<span className="ml-2 font-medium truncate">{node.name}</span>
+				<span className="text-gray-500 dark:text-gray-400 ms-1 shrink-0"><Icons.Folder /></span>
+				<span className="ms-2 font-medium truncate">{node.name}</span>
 			</button>
 			{isExpanded && (
 				<div>
@@ -468,13 +468,13 @@ const SideNavigation = memo(function SideNavigation({
 
 	return (
 		<ErrorBoundary>
-			<div className={`relative bg-gray-50 dark:bg-gray-900 border-r border-gray-200 dark:border-gray-700 transition-all duration-300 flex flex-col min-h-full z-10 ${isCollapsed ? 'w-16' : 'w-80 min-w-80'}`}>
+			<div className={`relative bg-gray-50 dark:bg-gray-900 border-e border-gray-200 dark:border-gray-700 transition-all duration-300 flex flex-col min-h-full z-10 ${isCollapsed ? 'w-16' : 'w-80 min-w-80'}`}>
 			{/* Search Bar */}
 			<div className={`${isCollapsed ? 'px-2' : 'px-4'} border-b border-gray-200 dark:border-gray-700 h-18 flex items-center relative`}>
 				{/* Collapse Toggle Button - Always positioned on the border */}
 				<button
 					onClick={toggleCollapse}
-					className="absolute -right-3 top-1/2 transform -translate-y-1/2 z-10 flex items-center justify-center w-6 h-6 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-600 rounded-circle shadow-sm hover:shadow-md text-gray-400 dark:text-gray-500 hover:text-gray-600 dark:hover:text-gray-300 transition-all duration-200"
+					className="absolute -end-3 top-1/2 transform -translate-y-1/2 z-10 flex items-center justify-center w-6 h-6 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-600 rounded-circle shadow-sm hover:shadow-md text-gray-400 dark:text-gray-500 hover:text-gray-600 dark:hover:text-gray-300 transition-all duration-200"
 					aria-label={isCollapsed ? 'Expand sidebar' : 'Collapse sidebar'}
 					title={isCollapsed ? 'Expand sidebar' : 'Collapse sidebar'}
 				>
@@ -484,7 +484,7 @@ const SideNavigation = memo(function SideNavigation({
 				{!isCollapsed ? (
 					<div className="flex items-center w-full">
 						<div className="relative flex-1">
-							<div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-gray-400 dark:text-gray-500">
+							<div className="absolute inset-y-0 start-0 ps-3 flex items-center pointer-events-none text-gray-400 dark:text-gray-500">
 								<Icons.Search />
 							</div>
 							<input
@@ -493,12 +493,12 @@ const SideNavigation = memo(function SideNavigation({
 								placeholder={t('web.nav.searchPlaceholder')}
 								value={searchQuery}
 								onChange={(e) => setSearchQuery(e.target.value)}
-								className="w-full pl-10 pr-8 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-sm text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-stone-500 dark:focus:ring-stone-400 focus:border-transparent transition-colors duration-200"
+								className="w-full ps-10 pe-8 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-sm text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-stone-500 dark:focus:ring-stone-400 focus:border-transparent transition-colors duration-200"
 							/>
 								{searchQuery && (
 									<button
 										onClick={() => setSearchQuery('')}
-										className="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-400 dark:text-gray-500 hover:text-gray-600 dark:hover:text-gray-300 transition-colors duration-200"
+										className="absolute inset-y-0 end-0 pe-3 flex items-center text-gray-400 dark:text-gray-500 hover:text-gray-600 dark:hover:text-gray-300 transition-colors duration-200"
 									>
 										<svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
 											<path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
@@ -660,7 +660,7 @@ const SideNavigation = memo(function SideNavigation({
 							}
 						>
 							<Icons.Board />
-							<span className="ml-3 text-sm font-medium">{t('web.nav.kanban')}</span>
+							<span className="ms-3 text-sm font-medium">{t('web.nav.kanban')}</span>
 						</NavLink>
 
 						{/* Tasks Navigation */}
@@ -675,7 +675,7 @@ const SideNavigation = memo(function SideNavigation({
 							}
 						>
 							<Icons.List />
-							<span className="ml-3 text-sm font-medium">{t('web.nav.allTasks')}</span>
+							<span className="ms-3 text-sm font-medium">{t('web.nav.allTasks')}</span>
 						</NavLink>
 
 						{/* Milestones Navigation */}
@@ -690,7 +690,7 @@ const SideNavigation = memo(function SideNavigation({
 							}
 						>
 							<Icons.Milestone />
-							<span className="ml-3 text-sm font-medium">{t('web.nav.milestones')}</span>
+							<span className="ms-3 text-sm font-medium">{t('web.nav.milestones')}</span>
 						</NavLink>
 
 						{/* Drafts Navigation */}
@@ -705,7 +705,7 @@ const SideNavigation = memo(function SideNavigation({
 							}
 						>
 							<Icons.Draft />
-							<span className="ml-3 text-sm font-medium">{t('web.nav.drafts')}</span>
+							<span className="ms-3 text-sm font-medium">{t('web.nav.drafts')}</span>
 						</NavLink>
 
 						{/* Statistics Navigation */}
@@ -720,7 +720,7 @@ const SideNavigation = memo(function SideNavigation({
 							}
 						>
 							<Icons.Statistics />
-							<span className="ml-3 text-sm font-medium">{t('web.nav.statistics')}</span>
+							<span className="ms-3 text-sm font-medium">{t('web.nav.statistics')}</span>
 						</NavLink>
 					</div>
 				)}
@@ -996,9 +996,9 @@ const SideNavigation = memo(function SideNavigation({
 						}
 					>
 						<Icons.DocumentSettings />
-						<span className="ml-3 text-sm font-medium">{t('web.nav.settings')}</span>
+						<span className="ms-3 text-sm font-medium">{t('web.nav.settings')}</span>
 						{version && (
-							<span className="ml-auto text-xs text-gray-500 dark:text-gray-400">Backlog.md - v{version}</span>
+							<span className="ms-auto text-xs text-gray-500 dark:text-gray-400">Backlog.md - v{version}</span>
 						)}
 					</NavLink>
 				) : (
