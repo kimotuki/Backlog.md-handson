@@ -1,4 +1,5 @@
 import { useState, useEffect, useMemo, useCallback, useRef, memo } from 'react';
+import { useLanguage } from '../contexts/LanguageContext';
 import { NavLink, useLocation, useNavigate } from 'react-router-dom';
 import { Tooltip } from 'react-tooltip';
 import {
@@ -308,6 +309,7 @@ const SideNavigation = memo(function SideNavigation({
 	const [version, setVersion] = useState<string>('');
 	const location = useLocation();
 	const navigate = useNavigate();
+	const { t } = useLanguage();
 
 	// Create handlers - just navigate to new pages
 	const handleCreateDocument = useCallback(() => {
@@ -488,7 +490,7 @@ const SideNavigation = memo(function SideNavigation({
 							<input
 								ref={setSearchInputRef}
 								type="text"
-								placeholder="Search (⌘K)..."
+								placeholder={t('web.nav.searchPlaceholder')}
 								value={searchQuery}
 								onChange={(e) => setSearchQuery(e.target.value)}
 								className="w-full pl-10 pr-8 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-sm text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-stone-500 dark:focus:ring-stone-400 focus:border-transparent transition-colors duration-200"
@@ -510,7 +512,7 @@ const SideNavigation = memo(function SideNavigation({
 							<button
 								onClick={expandAndFocusSearch}
 								className="flex items-center justify-center p-2 text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg transition-colors duration-200"
-								title="Search (⌘K)"
+								title={t('web.nav.searchTitle')}
 							>
 								<Icons.Search />
 						</button>
@@ -522,7 +524,7 @@ const SideNavigation = memo(function SideNavigation({
 			{!isCollapsed && searchQuery.trim() && unifiedSearchResults.length > 0 && (
 				<div className="p-4 border-b border-gray-200 dark:border-gray-700">
 					<div className="flex items-center justify-between mb-3">
-						<h3 className="text-sm font-medium text-gray-900 dark:text-gray-100">Search Results</h3>
+						<h3 className="text-sm font-medium text-gray-900 dark:text-gray-100">{t('web.nav.searchResults')}</h3>
 						{isSearching && (
 							<span className="text-xs text-gray-500 dark:text-gray-400">Searching…</span>
 						)}
@@ -605,18 +607,18 @@ const SideNavigation = memo(function SideNavigation({
 							type="button"
 							onClick={onRetry}
 							className="flex w-full items-center justify-center rounded-md bg-red-50 p-3 font-bold text-red-600 hover:bg-red-100 dark:bg-red-900/20 dark:text-red-400 dark:hover:bg-red-900/30"
-							aria-label="Failed to load navigation. Retry"
-							title="Failed to load navigation. Retry"
+							aria-label={`${t('web.nav.loadFailed')}. ${t('web.nav.retry')}`}
+							title={`${t('web.nav.loadFailed')}. ${t('web.nav.retry')}`}
 						>
 							<span aria-hidden="true">!</span>
-							<span className="sr-only">Retry</span>
+							<span className="sr-only">{t('web.nav.retry')}</span>
 						</button>
 					</div>
 				)}
 				{error && !isCollapsed && (
 					<div className="px-4 py-4">
 						<div className="text-center p-4 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg">
-							<p className="text-sm text-red-700 dark:text-red-400 mb-2">Failed to load navigation</p>
+							<p className="text-sm text-red-700 dark:text-red-400 mb-2">{t('web.nav.loadFailed')}</p>
 								{onRetry && (
 									<button
 										onClick={onRetry}
@@ -658,7 +660,7 @@ const SideNavigation = memo(function SideNavigation({
 							}
 						>
 							<Icons.Board />
-							<span className="ml-3 text-sm font-medium">Kanban Board</span>
+							<span className="ml-3 text-sm font-medium">{t('web.nav.kanban')}</span>
 						</NavLink>
 
 						{/* Tasks Navigation */}
@@ -673,7 +675,7 @@ const SideNavigation = memo(function SideNavigation({
 							}
 						>
 							<Icons.List />
-							<span className="ml-3 text-sm font-medium">All Tasks</span>
+							<span className="ml-3 text-sm font-medium">{t('web.nav.allTasks')}</span>
 						</NavLink>
 
 						{/* Milestones Navigation */}
@@ -688,7 +690,7 @@ const SideNavigation = memo(function SideNavigation({
 							}
 						>
 							<Icons.Milestone />
-							<span className="ml-3 text-sm font-medium">Milestones</span>
+							<span className="ml-3 text-sm font-medium">{t('web.nav.milestones')}</span>
 						</NavLink>
 
 						{/* Drafts Navigation */}
@@ -703,7 +705,7 @@ const SideNavigation = memo(function SideNavigation({
 							}
 						>
 							<Icons.Draft />
-							<span className="ml-3 text-sm font-medium">Drafts</span>
+							<span className="ml-3 text-sm font-medium">{t('web.nav.drafts')}</span>
 						</NavLink>
 
 						{/* Statistics Navigation */}
@@ -718,7 +720,7 @@ const SideNavigation = memo(function SideNavigation({
 							}
 						>
 							<Icons.Statistics />
-							<span className="ml-3 text-sm font-medium">Statistics</span>
+							<span className="ml-3 text-sm font-medium">{t('web.nav.statistics')}</span>
 						</NavLink>
 					</div>
 				)}
@@ -747,7 +749,7 @@ const SideNavigation = memo(function SideNavigation({
 									<button
 										onClick={handleCreateDocument}
 										className="p-1 text-gray-400 dark:text-gray-500 hover:text-gray-600 dark:hover:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 rounded transition-colors duration-200"
-										title="Create new document"
+										title={t('web.nav.createDocument')}
 									>
 										<svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
 										<path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
@@ -762,9 +764,9 @@ const SideNavigation = memo(function SideNavigation({
 									{isLoading ? (
 										<LoadingPhase className="px-3 py-2 text-sm text-gray-500 dark:text-gray-400" />
 									) : error ? (
-										<p className="px-3 py-2 text-sm text-gray-500 dark:text-gray-400">Documents unavailable</p>
+										<p className="px-3 py-2 text-sm text-gray-500 dark:text-gray-400">{t('web.nav.documentsUnavailable')}</p>
 									) : filteredDocs.length === 0 ? (
-										<p className="px-3 py-2 text-sm text-gray-500 dark:text-gray-400">No documents</p>
+										<p className="px-3 py-2 text-sm text-gray-500 dark:text-gray-400">{t('web.nav.noDocuments')}</p>
 									) : searchQuery.trim() ? (
 										// Search results stay flat, bypassing folder grouping
 										filteredDocs.map(doc => (
@@ -830,9 +832,9 @@ const SideNavigation = memo(function SideNavigation({
 									{isLoading ? (
 										<LoadingPhase className="px-3 py-2 text-sm text-gray-500 dark:text-gray-400" />
 									) : error ? (
-										<p className="px-3 py-2 text-sm text-gray-500 dark:text-gray-400">Decisions unavailable</p>
+										<p className="px-3 py-2 text-sm text-gray-500 dark:text-gray-400">{t('web.nav.decisionsUnavailable')}</p>
 									) : filteredDecisions.length === 0 ? (
-										<p className="px-3 py-2 text-sm text-gray-500 dark:text-gray-400">No decisions</p>
+										<p className="px-3 py-2 text-sm text-gray-500 dark:text-gray-400">{t('web.nav.noDecisions')}</p>
 									) : (
 										filteredDecisions.map((decision) => (
 											<NavLink
@@ -994,7 +996,7 @@ const SideNavigation = memo(function SideNavigation({
 						}
 					>
 						<Icons.DocumentSettings />
-						<span className="ml-3 text-sm font-medium">Settings</span>
+						<span className="ml-3 text-sm font-medium">{t('web.nav.settings')}</span>
 						{version && (
 							<span className="ml-auto text-xs text-gray-500 dark:text-gray-400">Backlog.md - v{version}</span>
 						)}
